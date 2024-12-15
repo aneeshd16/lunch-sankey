@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Lunch Sankey - Generate Sankey Diagrams from Lunch Money Transactions
+    </title>
+    <link href="./output.css" rel="stylesheet" />
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
+    <script type="text/javascript" src="index.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div
+      class="min-h-screen mt-24 flex flex-col items-center justify-center px-4"
+    >
+      <main class="w-full max-w-4xl text-center">
+        <h1 class="text-5xl font-bold mb-6">Lunch Sankey</h1>
+
+        <section class="mb-12">
+          <h2 class="text-3xl font-semibold mb-4">
+            Generate Sankey Diagrams from Lunch Money Transactions
+          </h2>
+          <p class="text-xl mb-4">
+            Visualize your financial flow with beautiful Sankey diagrams,
+            powered by your Lunch Money transaction data.
+          </p>
+          <p class="text-lg font-semibold text-gray-600 mb-4">
+            Your data never leaves your browser, ensuring complete privacy and
+            security. Feel free to look at the page source, it has been left
+            unminified on purpose.
+          </p>
+          <p class="text-lg text-gray-600 mb-8">
+            Lunch Sankey is open source! Check out the
+            <a
+              href="https://github.com/aneeshd16/lunch-sankey"
+              class="text-blue-500 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub repository</a
+            >.
+          </p>
+        </section>
+
+        <section id="input-container" class="bg-gray-100 rounded-lg p-8 mb-12">
+          <h3 class="text-2xl font-semibold mb-6">
+            Enter Your Lunch Money Access Token
+          </h3>
+          <div class="mb-6">
+            <input
+              type="text"
+              value=""
+              id="access-token"
+              placeholder="Your Access Token"
+              class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-lunchyellow text-center"
+            />
+          </div>
+          <button
+            id="generate-btn"
+            class="bg-lunchyellow hover:bg-yellow-500 text-gray-800 font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            Generate Diagram
+          </button>
+          <div id="error-message" class="hidden mt-4 text-red-500"></div>
+        </section>
+
+        <div id="success-container" class="hidden mt-4">
+          <div class="flex gap-12 justify-between mb-24">
+            <div
+              id="date-range-picker"
+              date-rangepicker
+              class="flex items-center"
+              datepicker-format="yyyy-mm-dd"
+            >
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                >
+                  <svg
+                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  id="datepicker-range-start"
+                  name="start"
+                  type="text"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Select date start"
+                />
+              </div>
+              <span class="mx-4 text-gray-500">to</span>
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+                >
+                  <svg
+                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  id="datepicker-range-end"
+                  name="end"
+                  type="text"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Select date end"
+                />
+              </div>
+            </div>
+            <div class="flex gap-6">
+              <button
+                id="refresh-btn"
+                class="bg-lunchyellow hover:bg-yellow-500 text-gray-800 font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+              >
+                Refresh Diagram
+              </button>
+              <button
+                id="download-btn"
+                class="bg-lunchyellow hover:bg-yellow-500 text-gray-800 font-bold py-3 px-6 rounded-md transition duration-300 ease-in-out transform hover:scale-105"
+              >
+                Download
+              </button>
+            </div>
+          </div>
+
+          <div id="sankey"></div>
+        </div>
+        <div id="loader" class="hidden mt-4">
+          <div
+            class="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"
+          ></div>
+        </div>
+
+        <section id="instructions" class="mb-12">
+          <h3 class="text-2xl font-semibold mb-6">
+            How to Get Your Access Token
+          </h3>
+          <ol class="text-lg text-left inline-block">
+            <li class="mb-2">1. Log in to your Lunch Money account</li>
+            <li class="mb-2">2. Go to Settings > Developer Settings</li>
+            <li class="mb-2">
+              3. Under "New Access Token", click "Request new access token"
+            </li>
+            <li class="mb-2">
+              4. Copy the generated Access Token and paste it in the input box
+              above
+            </li>
+          </ol>
+        </section>
+      </main>
+
+      <footer class="w-full text-center py-4">
+        <p class="text-gray-600">
+          A project by
+          <a class="text-blue-500 hover:underline" href="https://aneesh.xyz"
+            >Aneesh Devasthale</a
+          >
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
