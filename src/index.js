@@ -63,13 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (transaction.exclude_from_totals) {
                 continue;
             }
-            if (!currency) {
-                currency = transaction.currency;
-            }
-            if (currency !== transaction.currency) {
-                showError("Multi-currency transactions are not supported!");
-                return;
-            }
             if (transaction.is_income) {
                 incomes.push(transaction);
             } else {
