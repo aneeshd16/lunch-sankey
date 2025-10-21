@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             sum: 0,
                         };
                     }
-                    groups[transaction.category_group_id].sum += transaction.to_base;
+                    groups[transaction.category_group_id].sum = parseFloat((groups[transaction.category_group_id].sum + transaction.to_base).toFixed(10));
                     expenses.push({
                         ...transaction,
                         category_group_name: groups[transaction.category_group_id].name,
