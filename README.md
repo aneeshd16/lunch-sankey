@@ -72,6 +72,10 @@ npm install
 npm run watch
 ```
 
+4. Open `src/index.html` directly in your browser.
+
+5. After making changes, simply reload the tab.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
